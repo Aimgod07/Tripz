@@ -13,7 +13,7 @@ import TicketPricing from './pages/ticketpricing'
 import MainHome from './pages/MainHome'
 import Planner from './pages/Planner'
 import Planning from './pages/Planning'
-import Tripz from './pages/tripz'
+import Tripz from './pages/Tripz'
 
 
 
