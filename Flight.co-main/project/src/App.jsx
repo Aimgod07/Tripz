@@ -12,6 +12,8 @@ import Footer from './components/Footer'
 import TicketPricing from './pages/ticketpricing'
 import MainHome from './pages/MainHome'
 import Planner from './pages/Planner'
+import Planning from './pages/Planning'
+import Tripz from './pages/tripz'
 
 
 
@@ -25,7 +27,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<MainHome />} />
+          <Route path="/tripz" element={<Tripz />} />
           <Route path="/Planner" element={<Planner />} />
+          <Route path="/itinerary" element={<Planning />} />
           <Route path="/Ticket" element={<Home />} />
           <Route path="/dashboard" element={<TicketPricing />} />
          

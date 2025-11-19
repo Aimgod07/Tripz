@@ -22,12 +22,12 @@ const Navbar = () => {
                 className="h-10 w-auto transition-transform duration-300 group-hover:scale-105" 
               />
             </div>            <span className="hidden sm:block text-xl font-bold text-gray-800 group-hover:text-gray-600 transition-colors duration-300">
-              Tripz
+              Tripzt
             </span>
           </Link>          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             <Link 
-              to="/" 
+              to="/Ticket" 
               className="px-4 py-2 rounded-lg text-gray-700 hover:text-gray-600 hover:bg-gray-50 transition-all duration-300 font-medium"
             >
               Dummy Tickets
@@ -39,7 +39,7 @@ const Navbar = () => {
             Todo List
             </Link>
             <Link 
-              to="/about" 
+              to="/tripz" 
               className="px-4 py-2 rounded-lg text-gray-700 hover:text-gray-600 hover:bg-gray-50 transition-all duration-300 font-medium"
             >
               About Us
@@ -89,7 +89,7 @@ const Navbar = () => {
               Samples
             </Link>
             <Link 
-              to="/about" 
+              to="/tripz" 
               className="block px-3 py-2 rounded-lg text-gray-700 hover:text-gray-600 hover:bg-white transition-all duration-300 font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
