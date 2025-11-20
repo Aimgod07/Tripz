@@ -247,9 +247,9 @@ const Planner = () => {
         </div>
       ) : (
         <div className="planner">
-          <img src="../src/images/pilotboy.png" className="image1"/>
-          <img src="../src/images/fakeplane.png" className="image2"/>
-          <img src="../src/images/pushing.png" className="image3"/>
+          <img src="../../assets/pilotboy.png" className="image1"/>
+          <img src="../../assets/fakeplane.png" className="image2"/>
+          <img src="../../assets/pushing.png" className="image3"/>
           <div className="icons-container">
             <button className="item2">
               <ImAirplane size={40} />
