@@ -6,34 +6,34 @@ export default function Banner() {
     <div className="banner">
       <div className="slider" style={{ "--quantity": 10 }}>
         <div className="item" style={{ "--position": 1 }}>
-          <img src="../assets/pic1.jpg" alt="" />
+          <img src="../../public/pic1.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 2 }}>
-          <img src="../assets/pic2.jpg" alt="" />
+          <img src="../../public/pic2.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 3 }}>
-          <img src="../assets/hotel.jpg" alt="" />
+          <img src="../../public/hotel.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 4 }}>
-          <img src="../assets/plane.jpg" alt="" />
+          <img src="../../public/plane.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 5 }}>
-          <img src="../assets/pic3.jpg" alt="" />
+          <img src="../../public/pic3.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 6 }}>
-          <img src="../assets/hotel2.jpg" alt="" />
+          <img src="../../public/hotel2.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 7 }}>
-          <img src="../assets/pic4.jpg" alt="" />
+          <img src="../../public/pic4.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 8 }}>
-          <img src="../assets/pic6.jpg" alt="" />
+          <img src="../../public/pic6.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 9 }}>
-          <img src="../assets/pic8.jpg" alt="" />
+          <img src="../../public/pic8.jpg" alt="" />
         </div>
         <div className="item" style={{ "--position": 10 }}>
-          <img src="../assets/pic9.jpg" alt="" />
+          <img src="../../public/pic9.jpg" alt="" />
         </div>
       </div>
 
