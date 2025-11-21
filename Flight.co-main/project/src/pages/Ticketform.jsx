@@ -173,6 +173,8 @@ const Travelform = () => {
       await axios.post("http://localhost:5000/api/v1/ticket/add", transformedData, {
         headers: { "Content-Type": "application/json" }
       });
+  
+      console.log("Transformed Data:", transformedData);
 
       setSubmitMessage(`Flight ticket booked for ${forms.length} passenger(s)!`);
       setTimeout(() => {
