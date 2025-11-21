@@ -159,3 +159,13 @@ body{
         font-size: 5em;
     }
 }
+
+.modelitem{
+    display: flex ;
+    position: absolute;
+    z-index: 1;
+    max-block-size: 500vh;
+    transform: rotateZ(-10deg);
+    top:-29%;
+    left:-4%;
+}

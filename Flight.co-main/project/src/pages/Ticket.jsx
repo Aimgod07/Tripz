@@ -53,7 +53,7 @@ const Ticket = () => {
                 {/* Icon */}
                 <div className="flex justify-center mb-6 mt-4">
                   <div className="relative">
-                    <img src="../assets/flt.png" alt="Flight ticket" className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-500"/>
+                    <img src="/flt.png" alt="Flight ticket" className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-500"/>
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center animate-bounce">
                       <span className="text-white text-sm">✓</span>
                     </div>
@@ -113,7 +113,7 @@ const Ticket = () => {
                 {/* Icon */}
                 <div className="flex justify-center mb-6 mt-8">
                   <div className="relative">
-                    <img src="../assets/hotel.png" alt="Hotel reservation" className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-500"/>
+                    <img src="/hotel.png" alt="Hotel reservation" className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-500"/>
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-slate-500 rounded-full flex items-center justify-center animate-bounce">
                       <span className="text-white text-sm">🏨</span>
                     </div>
@@ -173,7 +173,7 @@ const Ticket = () => {
                 {/* Icon */}
                 <div className="flex justify-center mb-6 mt-8">
                   <div className="relative">
-                    <img src="../assets/insurance.png" alt="Travel insurance" className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-500"/>
+                    <img src="/insurance.png" alt="Travel insurance" className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-500"/>
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center animate-bounce">
                       <span className="text-white text-sm">🛡️</span>
                     </div>

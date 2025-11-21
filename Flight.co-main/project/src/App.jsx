@@ -14,7 +14,7 @@ import MainHome from './pages/MainHome'
 import Planner from './pages/Planner'
 import Planning from './pages/Planning'
 import Tripz from './pages/Tripz'
-
+import TodoList from './pages/Todolist'
 
 
 
@@ -27,12 +27,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<MainHome />} />
+          <Route path="/todolist" element={<TodoList />} />
           <Route path="/tripz" element={<Tripz />} />
           <Route path="/Planner" element={<Planner />} />
           <Route path="/itinerary" element={<Planning />} />
           <Route path="/Ticket" element={<Home />} />
           <Route path="/dashboard" element={<TicketPricing />} />
-         
           <Route path="/ticketform" element={<Travelform />} />
           <Route path="/hotelform" element={<BookingForm/>} />
           <Route path="/samples" element={<Samples />} />

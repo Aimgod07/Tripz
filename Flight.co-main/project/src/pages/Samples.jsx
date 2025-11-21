@@ -64,18 +64,18 @@ const Samples = () => {
                 
                 {/* Airline Card Template */}
                 {[
-                  { src: "../assets/aeroflot.png", name: "Aeroflot", link: "../assets/image.png" },
-                  { src: "../assets/a2.png", name: "Emirates", link: "../assets/image.png" },
-                  { src: "../assets/a3.png", name: "Qatar Airways", link: "../assets/image.png" },
-                  { src: "../assets/a4.png", name: "Lufthansa", link: "../assets/image.png" },
-                  { src: "../assets/a5.png", name: "British Airways", link: "../assets/image.png" },
-                  { src: "../assets/a6.png", name: "Air France", link: "../assets/image.png" },
-                  { src: "../assets/a7.png", name: "KLM", link: "../assets/image.png" },
-                  { src: "../assets/a8.png", name: "Turkish Airlines", link: "../assets/image.png" },
-                  { src: "../assets/a9.png", name: "Singapore Airlines", link: "../assets/image.png" },
-                  { src: "../assets/a10.png", name: "Cathay Pacific", link: "../assets/image.png" },
-                  { src: "../assets/a11.png", name: "Swiss International", link: "../assets/image.png" },
-                  { src: "../assets/a12.png", name: "Austrian Airlines", link: "../assets/image.png" }
+                  { src: "/aeroflot.png", name: "Aeroflot", link: "/image.png" },
+                  { src: "/a2.png", name: "Emirates", link: "/image.png" },
+                  { src: "/a3.png", name: "Qatar Airways", link: "/image.png" },
+                  { src: "/a4.png", name: "Lufthansa", link: "/image.png" },
+                  { src: "/a5.png", name: "British Airways", link: "/image.png" },
+                  { src: "/a6.png", name: "Air France", link: "/image.png" },
+                  { src: "/a7.png", name: "KLM", link: "/image.png" },
+                  { src: "/a8.png", name: "Turkish Airlines", link: "/image.png" },
+                  { src: "/a9.png", name: "Singapore Airlines", link: "/image.png" },
+                  { src: "/a10.png", name: "Cathay Pacific", link: "/image.png" },
+                  { src: "/a11.png", name: "Swiss International", link: "/image.png" },
+                  { src: "/a12.png", name: "Austrian Airlines", link: "/image.png" }
                 ].map((airline, index) => (
                   <div key={index} className="group">
                     <a href={airline.link} className="block">                      <div className="relative bg-white rounded-2xl p-6 shadow-lg border border-gray-100 transform transition-all duration-300 hover:scale-105 hover:shadow-xl group-hover:border-gray-300">

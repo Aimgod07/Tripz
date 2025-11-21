@@ -22,7 +22,7 @@ const Navbar = () => {
                 className="h-10 w-auto transition-transform duration-300 group-hover:scale-105" 
               />
             </div>            <span className="hidden sm:block text-xl font-bold text-gray-800 group-hover:text-gray-600 transition-colors duration-300">
-              Tripzt
+              TRIPZY
             </span>
           </Link>          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
@@ -33,7 +33,7 @@ const Navbar = () => {
               Dummy Tickets
             </Link>
             <Link 
-              to="/samples" 
+              to="/todolist" 
               className="px-4 py-2 rounded-lg text-gray-700 hover:text-gray-600 hover:bg-gray-50 transition-all duration-300 font-medium"
             >
             Todo List

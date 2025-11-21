@@ -104,7 +104,7 @@ const Dummyticket = () => {
                 {/* Main Image Container */}
                 <div className="relative overflow-hidden rounded-3xl shadow-2xl transform transition-all duration-700 group-hover:scale-105">
                   <img
-                    src="../assets/air1.jpg"
+                    src="/air1.jpg"
                     alt="Sample Dummy Ticket"
                     className="w-full h-96 lg:h-[500px] object-cover"
                   />

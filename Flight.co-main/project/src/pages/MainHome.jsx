@@ -1,10 +1,18 @@
 import "../css/style.css"; // your external CSS file
-
+import Spline from '@splinetool/react-spline';
 
 export default function Banner() {
   return (
     <div className="banner">
-      <div className="slider" style={{ "--quantity": 10 }}>
+      <div>
+      <Spline
+      className="modelitem"
+        scene="https://prod.spline.design/EU9EC4jT-VKYeLff/scene.splinecode" 
+      
+      />
+    
+      </div>
+      {/* <div className="slider" style={{ "--quantity": -1 }}>
         <div className="item" style={{ "--position": 1 }}>
           <img src="../../public/pic1.jpg" alt="" />
         </div>
@@ -35,7 +43,7 @@ export default function Banner() {
         <div className="item" style={{ "--position": 10 }}>
           <img src="../../public/pic9.jpg" alt="" />
         </div>
-      </div>
+      </div> */}
 
       <div className="content">
         <h1 data-content="TRIPZY">TRIPZY</h1>

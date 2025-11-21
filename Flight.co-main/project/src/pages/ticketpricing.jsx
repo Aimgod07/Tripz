@@ -41,7 +41,7 @@ const TicketPricing = () => {
   
   useEffect(() => {
     getSinglePrice();
-    // eslint-disable-next-line
+ 
   }, []); // Only run once on mount
 
   // Add this function to handle form submission

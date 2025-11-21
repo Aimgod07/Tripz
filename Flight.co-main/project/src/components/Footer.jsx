@@ -41,13 +41,13 @@ const Footer = () => {
     ];    const socialLinks = [
         {
             name: "YouTube",
-            icon: "../assets/youtube.png",
+            icon: "/youtube.png",
             url: "https://youtube.com",
             hoverColor: "hover:bg-gray-100"
         },
         {
             name: "Instagram",
-            icon: "../assets/instagram.png",
+            icon: "/instagram.png",
             url: "https://instagram.com",
             hoverColor: "hover:bg-gray-100"
         }
@@ -64,7 +64,7 @@ const Footer = () => {
                         <div className="lg:col-span-1">
                             <div className="flex items-center space-x-3 mb-6">
                                 <img 
-                                    src="../assets/logo.jpg" 
+                                    src="/logo.jpg" 
                                     alt="TravelCo Logo" 
                                     className="h-12 w-12 rounded-lg shadow-lg"
                                 />
