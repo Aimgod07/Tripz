@@ -84,6 +84,7 @@ const Planner = () => {
   // };
 
   // ...existing code...
+  // ...existing code...
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -99,20 +100,25 @@ const Planner = () => {
       const data = await res.json();
       console.log("Raw API Data:", data);
 
-      // get plain text that may contain the JSON
-      const raw = typeof data === "string" ? data : data.aiPlan || "";
-      const cleaned = (raw || "")
+      // Pull raw text (handle both string and object shapes)
+      const raw = typeof data === "string" ? data : (data.aiPlan ?? "");
+      if (!raw || raw.toString().trim().length === 0) {
+        console.warn("AI returned empty response (aiPlan empty). Using fallback empty result.");
+        setAiResult({ hotels: [], restaurants: [], flights: [] });
+        return;
+      }
+
+      const cleaned = raw
+        .toString()
         .replace(/```/g, "") // remove code fences
         .replace(/^\s*json\s*/i, "") // remove leading "json"
         .trim();
 
       // helper to extract the JSON object/array block
       const extractJsonBlock = (s) => {
-        // try code block capture first
         const codeMatch = s.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
         if (codeMatch && codeMatch[1]) return codeMatch[1].trim();
 
-        // otherwise locate first { or [ and last matching } or ]
         const startObj = s.indexOf("{");
         const startArr = s.indexOf("[");
         const start =
@@ -139,7 +145,6 @@ const Planner = () => {
           parsedData = JSON.parse(jsonBlock);
         } catch (err) {
           console.warn("JSON.parse failed, trying relaxed fixes:", err);
-          // fallback: replace single quotes with double quotes (risky) and try again
           const relaxed = jsonBlock
             .replace(/(['”’])/g, '"')
             .replace(/,\s*([}\]])/g, "$1");
@@ -152,17 +157,25 @@ const Planner = () => {
         }
       } else {
         console.warn("No JSON block found in AI response.");
+        parsedData = {};
       }
 
-      setAiResult(parsedData);
+      // Ensure shape to avoid .map errors
+      setAiResult({
+        hotels: parsedData.hotels ?? [],
+        restaurants: parsedData.restaurants ?? [],
+        flights: parsedData.flights ?? [],
+      });
       console.log("Parsed Data:", parsedData);
     } catch (error) {
       console.error("Error fetching data:", error);
+      // fallback so UI remains stable
+      setAiResult({ hotels: [], restaurants: [], flights: [] });
     } finally {
       setLoading(false);
     }
   };
-  // ...existing code...
+// ...existing code...
 
   const { hotels = [], restaurants = [], flights = [] } = aiResult || {};
 
