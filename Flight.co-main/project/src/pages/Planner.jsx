@@ -10,6 +10,8 @@ const Planner = () => {
   });
   const [aiResult, setAiResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [status ,setStatus]=useState('hotels');
+
 
   const cardStyle = {
     backgroundColor: "#ffffff",
@@ -84,7 +86,6 @@ const Planner = () => {
   // };
 
   // ...existing code...
-  // ...existing code...
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -100,33 +101,28 @@ const Planner = () => {
       const data = await res.json();
       console.log("Raw API Data:", data);
 
-      // Pull raw text (handle both string and object shapes)
-      const raw = typeof data === "string" ? data : (data.aiPlan ?? "");
-      if (!raw || raw.toString().trim().length === 0) {
-        console.warn("AI returned empty response (aiPlan empty). Using fallback empty result.");
-        setAiResult({ hotels: [], restaurants: [], flights: [] });
-        return;
-      }
-
-      const cleaned = raw
-        .toString()
+      // get plain text that may contain the JSON
+      const raw = typeof data === "string" ? data : data.aiPlan || "";
+      const cleaned = (raw || "")
         .replace(/```/g, "") // remove code fences
         .replace(/^\s*json\s*/i, "") // remove leading "json"
         .trim();
 
       // helper to extract the JSON object/array block
       const extractJsonBlock = (s) => {
+        // try code block capture first
         const codeMatch = s.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
         if (codeMatch && codeMatch[1]) return codeMatch[1].trim();
 
+        // otherwise locate first { or [ and last matching } or ]
         const startObj = s.indexOf("{");
         const startArr = s.indexOf("[");
         const start =
           startObj === -1
             ? startArr
             : startArr === -1
-            ? startObj
-            : Math.min(startObj, startArr);
+              ? startObj
+              : Math.min(startObj, startArr);
         if (start === -1) return null;
 
         const endObj = s.lastIndexOf("}");
@@ -145,6 +141,7 @@ const Planner = () => {
           parsedData = JSON.parse(jsonBlock);
         } catch (err) {
           console.warn("JSON.parse failed, trying relaxed fixes:", err);
+          // fallback: replace single quotes with double quotes (risky) and try again
           const relaxed = jsonBlock
             .replace(/(['”’])/g, '"')
             .replace(/,\s*([}\]])/g, "$1");
@@ -157,27 +154,26 @@ const Planner = () => {
         }
       } else {
         console.warn("No JSON block found in AI response.");
-        parsedData = {};
       }
 
-      // Ensure shape to avoid .map errors
-      setAiResult({
-        hotels: parsedData.hotels ?? [],
-        restaurants: parsedData.restaurants ?? [],
-        flights: parsedData.flights ?? [],
-      });
+      setAiResult(parsedData);
       console.log("Parsed Data:", parsedData);
     } catch (error) {
       console.error("Error fetching data:", error);
-      // fallback so UI remains stable
-      setAiResult({ hotels: [], restaurants: [], flights: [] });
     } finally {
       setLoading(false);
     }
   };
-// ...existing code...
+  // ...existing code...
 
-  const { hotels = [], restaurants = [], flights = [] } = aiResult || {};
+  const {
+    hotels = [],
+    restaurants = [],
+    flights = [],
+    weather = [],
+    places = [],
+    additional_tips = [],
+  } = aiResult || {};
 
   return (
     <div className="full-page">
@@ -185,14 +181,49 @@ const Planner = () => {
         <div
           style={{
             fontFamily: "Arial, sans-serif",
-            maxWidth: "1200px",
+            maxWidth: "1700px",
             margin: "0 auto",
             padding: "20px",
+            backgroundColor: "white",
           }}
         >
-          <h1 style={{ textAlign: "center" }}>Trip Destination Details</h1>
+          <h1
+            style={{
+              textAlign: "center",
+              fontFamily: "monospace",
+              fontSize: "30px",
+              fontWeight:"bold"
+              
+            }}
+          >
+            Trip Destination Details
+          </h1>
+          <div className="icons-container" style={{marginLeft:"8vw",marginTop:"1vw",marginBottom:"1vw"}}>
+            <button className="item2">
+              <ImAirplane size={40} onClick={()=>{
+              }}/>
+            </button>
 
-          <section>
+            <button className="item2">
+              <ImGlass2 size={40}onClick={()=>{
+                setStatus('restaurant')
+              }}/>
+            </button>
+
+            <button className="item2">
+              <ImOffice size={40} onClick={()=>{
+                setStatus('hotels')
+              }}/>
+            </button>
+
+            <button className="item2">
+              <ImEarth size={40} onClick={()=>{
+                setStatus('others')
+              }}/>
+            </button>
+          </div>
+
+          <section className="hotel" style={{height:"550px"}}>
             <h2>Hotels</h2>
             <div style={sectionStyle}>
               {hotels.map((hotel, index) => (
@@ -214,7 +245,7 @@ const Planner = () => {
             </div>
           </section>
 
-          <section>
+          <section style={{ backgroundColor: "blue" }}>
             <h2>Restaurants</h2>
             <div style={sectionStyle}>
               {restaurants.map((restaurant, index) => (
@@ -236,7 +267,7 @@ const Planner = () => {
             </div>
           </section>
 
-          <section>
+          <section style={{ backgroundColor: "green" }}>
             <h2>Flights</h2>
             <div style={sectionStyle}>
               {flights.map((flight, index) => (
@@ -257,12 +288,78 @@ const Planner = () => {
               ))}
             </div>
           </section>
+          <section style={{ backgroundColor: "red" }}>
+            <h2>Weather</h2>
+            <div style={sectionStyle}>
+              {weather.map((weather, index) => (
+                <div
+                  key={index}
+                  style={cardStyle}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = cardHoverStyle.transform)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "none")
+                  }
+                >
+                  <h3>Condition: {weather.condition}</h3>
+
+                  <h3>Temp_in _day: {weather.temperature.day}</h3>
+                  <h3>Temp_in_night: {weather.temperature.night}</h3>
+                  <h3>Humidity: {weather.humidity}</h3>
+                  <h3>Additional_details: {weather.notes}</h3>
+                </div>
+              ))}
+            </div>
+          </section>
+          <section style={{ backgroundColor: "yellow" }}>
+            <h2>Must Visit Places</h2>
+            <div style={sectionStyle}>
+              {places.map((place, index) => (
+                <div
+                  key={index}
+                  style={cardStyle}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = cardHoverStyle.transform)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "none")
+                  }
+                >
+                  <h3>{place.name}</h3>
+                  <p>Description: {place.description}</p>
+                  <p>Price: {place.cost}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section style={{ backgroundColor: "brown" }}>
+            <h2>Additional_tips</h2>
+            <div style={sectionStyle}>
+              {additional_tips.map((additional_tip, index) => (
+                <div
+                  key={index}
+                  style={cardStyle}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = cardHoverStyle.transform)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "none")
+                  }
+                >
+                  <h3>{additional_tip.tip}</h3>
+                  <h3>{additional_tip.cost}</h3>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       ) : (
         <div className="planner">
-          <img src="/pilotboy.png" className="image1"/>
-          <img src="/fakeplane.png" className="image2"/>
-          <img src="/pushing.png" className="image3"/>
+          <img src="/pilotboy.png" className="image1" />
+          <img src="/fakeplane.png" className="image2" />
+          <img src="/pushing.png" className="image3" />
           <div className="icons-container">
             <button className="item2">
               <ImAirplane size={40} />
