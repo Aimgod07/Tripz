@@ -1,4 +1,5 @@
 import { ImAirplane, ImGlass2, ImOffice, ImEarth } from "react-icons/im";
+import { AiFillBackward } from "react-icons/ai";
 import "../css/planner.css";
 import { useState } from "react";
 
@@ -87,92 +88,92 @@ const Planner = () => {
 
   // ...existing code...
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:5000/api/plan-trip", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const res = await fetch("http://localhost:5000/api/plan-trip", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-      const data = await res.json();
-      console.log("Raw API Data:", data);
+    const data = await res.json();
+    console.log("Raw API Data:", data);
 
-      // get plain text that may contain the JSON
-      const raw = typeof data === "string" ? data : data.aiPlan || "";
-      const cleaned = (raw || "")
-        .replace(/```/g, "") // remove code fences
-        .replace(/^\s*json\s*/i, "") // remove leading "json"
-        .trim();
+    const raw = typeof data === "string" ? data : data.aiPlan || "";
+    const cleaned = (raw || "")
+      .replace(/```/g, "")
+      .replace(/^\s*json\s*/i, "")
+      .trim();
 
-      // helper to extract the JSON object/array block
-      const extractJsonBlock = (s) => {
-        // try code block capture first
-        const codeMatch = s.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-        if (codeMatch && codeMatch[1]) return codeMatch[1].trim();
+    const extractJsonBlock = (s) => {
+      const codeMatch = s.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+      if (codeMatch && codeMatch[1]) return codeMatch[1].trim();
 
-        // otherwise locate first { or [ and last matching } or ]
-        const startObj = s.indexOf("{");
-        const startArr = s.indexOf("[");
-        const start =
-          startObj === -1
-            ? startArr
-            : startArr === -1
-              ? startObj
-              : Math.min(startObj, startArr);
-        if (start === -1) return null;
+      const startObj = s.indexOf("{");
+      const startArr = s.indexOf("[");
+      const start =
+        startObj === -1
+          ? startArr
+          : startArr === -1
+          ? startObj
+          : Math.min(startObj, startArr);
+      if (start === -1) return null;
 
-        const endObj = s.lastIndexOf("}");
-        const endArr = s.lastIndexOf("]");
-        const end = Math.max(endObj, endArr);
-        if (end === -1 || end <= start) return null;
+      const endObj = s.lastIndexOf("}");
+      const endArr = s.lastIndexOf("]");
+      const end = Math.max(endObj, endArr);
+      if (end === -1 || end <= start) return null;
 
-        return s.slice(start, end + 1).trim();
-      };
+      return s.slice(start, end + 1).trim();
+    };
 
-      const jsonBlock = extractJsonBlock(cleaned);
-      let parsedData = {};
+    const jsonBlock = extractJsonBlock(cleaned);
+    let parsedData = {};
 
-      if (jsonBlock) {
+    if (jsonBlock) {
+      try {
+        parsedData = JSON.parse(jsonBlock);
+      } catch (err) {
+        console.warn("JSON.parse failed:", err);
+
+        // Attempt a limited, safer normalization for common issues:
+        const relaxed = jsonBlock
+          .replace(/[\u2018\u2019\u201C\u201D]/g, '"') // smart quotes -> "
+          .replace(/,\s*([}\]])/g, "$1") // remove trailing commas
+          .replace(/([,{]\s*)([A-Za-z0-9_@-]+)\s*:/g, '$1"$2":'); // quote unquoted keys
+
         try {
-          parsedData = JSON.parse(jsonBlock);
-        } catch (err) {
-          console.warn("JSON.parse failed, trying relaxed fixes:", err);
-          // fallback: replace single quotes with double quotes (risky) and try again
-          const relaxed = jsonBlock
-            .replace(/(['”’])/g, '"')
-            .replace(/,\s*([}\]])/g, "$1");
-          try {
-            parsedData = JSON.parse(relaxed);
-          } catch (err2) {
-            console.error("Second parse attempt failed:", err2);
-            parsedData = {};
-          }
+          parsedData = JSON.parse(relaxed);
+        } catch (err2) {
+          console.warn("Relaxed parse failed:", err2);
+          // Final fallback: keep the raw json block so UI/debugging can inspect it
+          parsedData = { __raw: jsonBlock, __cleaned: cleaned };
         }
-      } else {
-        console.warn("No JSON block found in AI response.");
       }
-
-      setAiResult(parsedData);
-      console.log("Parsed Data:", parsedData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      // No JSON block detected — keep entire cleaned response
+      parsedData = { __raw: cleaned };
     }
-  };
+
+    setAiResult(parsedData);
+    console.log("Parsed Data (or raw fallback):", parsedData);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    setLoading(false);
+  }
+};
   // ...existing code...
 
   const {
     hotels = [],
     restaurants = [],
     flights = [],
-    weather = [],
+    weathers = [],
     places = [],
-    additional_tips = [],
   } = aiResult || {};
 
   return (
@@ -198,9 +199,10 @@ const Planner = () => {
           >
             Trip Destination Details
           </h1>
-          <div className="icons-container" style={{marginLeft:"8vw",marginTop:"1vw",marginBottom:"1vw"}}>
+          <div className="icons-container" style={{ position:"relative",alignContent:"center",marginLeft:'20%',  marginTop:"1vw",marginBottom:"1vw",blockSize:"fit-content",padding:"10px"}}>
             <button className="item2">
               <ImAirplane size={40} onClick={()=>{
+                setStatus('flight')
               }}/>
             </button>
 
@@ -221,9 +223,11 @@ const Planner = () => {
                 setStatus('others')
               }}/>
             </button>
+        
           </div>
 
-          <section className="hotel" style={{height:"550px"}}>
+          {status==='hotels'?
+          <section className="hotel" style={{height:"1000px"}} >
             <h2>Hotels</h2>
             <div style={sectionStyle}>
               {hotels.map((hotel, index) => (
@@ -243,9 +247,10 @@ const Planner = () => {
                 </div>
               ))}
             </div>
-          </section>
-
-          <section style={{ backgroundColor: "blue" }}>
+          </section>:
+            status==='restaurant'?
+            <section style={{height:"1000px"}}
+          className="restaurant">
             <h2>Restaurants</h2>
             <div style={sectionStyle}>
               {restaurants.map((restaurant, index) => (
@@ -266,32 +271,12 @@ const Planner = () => {
               ))}
             </div>
           </section>
-
-          <section style={{ backgroundColor: "green" }}>
-            <h2>Flights</h2>
-            <div style={sectionStyle}>
-              {flights.map((flight, index) => (
-                <div
-                  key={index}
-                  style={cardStyle}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = cardHoverStyle.transform)
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = "none")
-                  }
-                >
-                  <h3>{flight.airline}</h3>
-                  <p>Departure: {flight.from}</p>
-                  <p>Price: {flight.price}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-          <section style={{ backgroundColor: "red" }}>
+          :status==='others'?
+          <div> 
+             <section style={{height:"1000px"}}className="weather">
             <h2>Weather</h2>
             <div style={sectionStyle}>
-              {weather.map((weather, index) => (
+              {weathers.map((weather, index) => (
                 <div
                   key={index}
                   style={cardStyle}
@@ -312,7 +297,7 @@ const Planner = () => {
               ))}
             </div>
           </section>
-          <section style={{ backgroundColor: "yellow" }}>
+          <section style={{height:"1000px"}}className="places">
             <h2>Must Visit Places</h2>
             <div style={sectionStyle}>
               {places.map((place, index) => (
@@ -334,10 +319,13 @@ const Planner = () => {
             </div>
           </section>
 
-          <section style={{ backgroundColor: "brown" }}>
-            <h2>Additional_tips</h2>
+         
+          </div>
+          : status==='flight'?
+                <section style={{height:"1000px"}}className="flight">
+            <h2>Flights</h2>
             <div style={sectionStyle}>
-              {additional_tips.map((additional_tip, index) => (
+              {flights.map((flight, index) => (
                 <div
                   key={index}
                   style={cardStyle}
@@ -348,12 +336,19 @@ const Planner = () => {
                     (e.currentTarget.style.transform = "none")
                   }
                 >
-                  <h3>{additional_tip.tip}</h3>
-                  <h3>{additional_tip.cost}</h3>
+                  <h3>{flight.airline}</h3>
+                  <p>Departure: {flight.from}</p>
+                  <p>Price: {flight.price}</p>
                 </div>
               ))}
             </div>
           </section>
+            : null
+          } 
+
+          
+
+          
         </div>
       ) : (
         <div className="planner">

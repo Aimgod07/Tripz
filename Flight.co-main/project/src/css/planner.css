@@ -223,3 +223,40 @@ input[type="text"], input[type="number"] {
     color: black;
 
 }
+
+.hotel{
+  background-image: url('/public/htel.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.weather{
+  background-image: url('/public/weather.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.flight{
+  background-image: url('/public/flight.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.additional_tips{
+  background-image: url('/public/guide.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.places{
+  background-image: url('/public/monument.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.restaurant{
+  background-image: url('/public/restaurant.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

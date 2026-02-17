@@ -15,6 +15,8 @@ import Planner from './pages/Planner'
 import Planning from './pages/Planning'
 import Tripz from './pages/Tripz'
 import TodoList from './pages/Todolist'
+import ReviewPage from './pages/ReviewPage'
+import Notes from './pages/Notes'
 
 
 
@@ -28,6 +30,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainHome />} />
           <Route path="/todolist" element={<TodoList />} />
+          <Route path="/notes" element={<Notes />} />
           <Route path="/tripz" element={<Tripz />} />
           <Route path="/Planner" element={<Planner />} />
           <Route path="/itinerary" element={<Planning />} />
@@ -38,6 +41,7 @@ function App() {
           <Route path="/samples" element={<Samples />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/buynow" element={<Ticket />} />
+          <Route path="/review" element={<ReviewPage />} />
           {/* <Route path="/login" element={<Login />} /> */}
         </Routes>
         <Footer />
