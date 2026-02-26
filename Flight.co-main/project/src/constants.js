@@ -1,3 +1,3 @@
 export const ACCESS_TOKEN="access";
 export const REFRESH_TOKEN="refresh";
-export const OPENROUTER_KEY="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";
+export const OPENROUTER_KEY="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";
