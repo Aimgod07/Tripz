@@ -17,6 +17,7 @@ import Tripz from './pages/Tripz'
 import TodoList from './pages/Todolist'
 import ReviewPage from './pages/ReviewPage'
 import Notes from './pages/Notes'
+import FloatingAIChatbot from './components/AIChatbot'
 
 
 
@@ -25,6 +26,8 @@ function App() {
 
   return (
     <>
+        {/* Chatbot */}
+      <FloatingAIChatbot />
       <Router>
         <Navbar />
         <Routes>
@@ -43,6 +46,7 @@ function App() {
           <Route path="/buynow" element={<Ticket />} />
           <Route path="/review" element={<ReviewPage />} />
           {/* <Route path="/login" element={<Login />} /> */}
+      
         </Routes>
         <Footer />
     
