@@ -43,7 +43,7 @@ Do not give any additional tip or notes just give info about flights ,hotels,res
   "hotels": [{"name": "", "rating": "", "price": ""}],
   "flights": [{"airline": "", "price": "", "from": ""}],
   "restaurants": [{"name": "", "type": "", "rating": ""}],
-  "weathers":[{"condition":"","humidity":"","temprature":{"day":"","night":""}}],
+  "weathers":[{"condition":"","humidity":"","temperature":{"day":"","night":""}}],
   "Places":[{name:"","description":"","cost":""}],
 
 Destination: ${destination}
@@ -54,7 +54,7 @@ budget: ${budget}
 
   try {
     const response = await client.chat.completions.create({
-      model: "mistralai/mistral-7b-instruct", // You can switch to any available model
+      model: "tencent/hy3-preview:free", // You can switch to any available model
       messages: [{ role: "user", content: prompt }],
     });
 

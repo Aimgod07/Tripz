@@ -23,7 +23,6 @@ body{
             height: 90%;
             transform: translateX(-50%);
             content: '';
-            background-image: url(../../public/bg.png);
             background-size: 100%;
             background-repeat: no-repeat;
             background-position: top center;

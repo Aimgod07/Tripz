@@ -2,7 +2,6 @@ import { ImAirplane, ImGlass2, ImOffice, ImEarth } from "react-icons/im";
 import { AiFillBackward } from "react-icons/ai";
 import "../css/planner.css";
 import { useState } from "react";
-import  aiResult from "../components/airesult";
 
 const Planner = () => {
   const [formData, setFormData] = useState({
@@ -10,18 +9,9 @@ const Planner = () => {
     travelDate: "",
     budget: "",
   });
-    const backgrounds = {
-  restaurant: "/public/restaurant.jpg",
-  flight: "/public/flight.jpg",
-  hotel: "/public/htel.jpg",
-  weather: "/public/weather.jpg",
-};
-
+  const [aiResult, setAiResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [status ,setStatus]=useState('hotels');
-    const [activeSection, setActiveSection] = useState("flight");
-
-    const bgImage = backgrounds[activeSection];
 
 
   const cardStyle = {
@@ -46,7 +36,6 @@ const Planner = () => {
     justifyContent: "center",
     margin: "20px 0",
   };
-
 
   const handleChange = (e) => {
     setFormData({
@@ -184,61 +173,54 @@ const Planner = () => {
     restaurants = [],
     flights = [],
     weathers = [],
+    places = [],
   } = aiResult || {};
 
   return (
-    
-       (
-        <div className="details"
+    <div className="full-page">
+      {aiResult ? (
+        <div
           style={{
-        height: "100vh",
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        transition: "0.5s ease", // smooth change
-      }}
+            fontFamily: "Arial, sans-serif",
+            maxWidth: "1700px",
+            margin: "0 auto",
+            padding: "20px",
+            backgroundColor: "white",
+          }}
         >
           <h1
             style={{
               textAlign: "center",
               fontFamily: "monospace",
               fontSize: "30px",
-              fontWeight:"bold",
-              backgroundColor: "rgba(255, 255, 255, 0.8)",
-              display: "inline-block",
-              borderRadius: "20px",
-              padding:"15px 20px 15px 20px",
+              fontWeight:"bold"
+              
             }}
           >
             Trip Destination Details
           </h1>
           <div className="icons-container" style={{ position:"relative",alignContent:"center",marginLeft:'20%',  marginTop:"1vw",marginBottom:"1vw",blockSize:"fit-content",padding:"10px"}}>
             <button className="item2">
-              <ImAirplane size={30} onClick={()=>{
-                setStatus('flight'),
-               setActiveSection("flight")
-              }}
-              />
+              <ImAirplane size={40} onClick={()=>{
+                setStatus('flight')
+              }}/>
             </button>
 
             <button className="item2">
               <ImGlass2 size={40}onClick={()=>{
-                setStatus('restaurant'),
-                 setActiveSection("restaurant")
+                setStatus('restaurant')
               }}/>
             </button>
 
             <button className="item2">
               <ImOffice size={40} onClick={()=>{
-                setStatus('hotels'),
-                 setActiveSection("hotel")
+                setStatus('hotels')
               }}/>
             </button>
 
             <button className="item2">
               <ImEarth size={40} onClick={()=>{
-                setStatus('others'),
-                 setActiveSection("weather")
+                setStatus('others')
               }}/>
             </button>
         
@@ -315,7 +297,28 @@ const Planner = () => {
               ))}
             </div>
           </section>
-          
+          <section style={{height:"1000px"}}className="places">
+            <h2>Must Visit Places</h2>
+            <div style={sectionStyle}>
+              {places.map((place, index) => (
+                <div
+                  key={index}
+                  style={cardStyle}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = cardHoverStyle.transform)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "none")
+                  }
+                >
+                  <h3>{place.name}</h3>
+                  <p>Description: {place.description}</p>
+                  <p>Price: {place.cost}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
          
           </div>
           : status==='flight'?
@@ -347,10 +350,71 @@ const Planner = () => {
 
           
         </div>
-       )
+      ) : (
+        <div className="planner">
   
-    );
-
+       
+          <div className="input-container" >
+             <div className="text" style={{
+              fontFamily:"sans-serif",fontSize:"60px"
+              ,color:"white",fontWeight:"600",marginBottom:"20px"
+             }}>
+          Enjoy Travelling with <p style={{fontSize:"80px",fontWeight:"900",color:"rgb(242, 130, 96)",border:"2px solid rgb(242, 130, 96)",outline:"2px solid rgb(242, 130, 96)",outlineColor:"black",margin:"20px 0"}}>Tripzy</p>Plan your trip in an easy way.
+          </div>
+            <form onSubmit={handleSubmit} className="planner-form">
+              <input
+                type="text"
+                name="destination"
+                placeholder="Enter destination"
+                value={formData.destination}
+                onChange={handleChange}
+                required
+                style={{
+                  maxWidth:"20vw",
+                  minWidth:"15vw"
+                }}
+              />
+              <input
+                type="date"
+                name="travelDate"
+                value={formData.travelDate}
+                onChange={handleChange}
+                required
+                style={{
+                  color:"black",
+                  maxWidth:"14vw",
+                  minWidth:"15vw"
+                }}
+      
+              />
+              <input
+                type="number"
+                name="budget"
+                placeholder="Enter budget"
+                value={formData.budget}
+                onChange={handleChange}
+                required
+                style={{
+                  maxWidth:"20vw",
+                  minWidth:"15vw",
+                  height:""
+                }}
+              />
+              <button type="submit" className="submit-button"
+              style={{
+                color:"black"
+              }}>
+                Plan 
+              </button>
+            </form>
+            </div>
+            </div>
+ 
+        
+      )}
+     
+    </div>
+  );
 };
 
 export default Planner;

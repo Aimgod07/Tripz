@@ -39,7 +39,7 @@ export default function FloatingAIChatbot() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "openai/gpt-4o-mini",
+          model: "tencent/hy3-preview:free",
           messages: updatedMessages
         })
       });
